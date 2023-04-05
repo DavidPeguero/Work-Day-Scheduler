@@ -12,15 +12,17 @@ $(document).ready(function () {
   //Get all the time block containers
   var timeBlocks = $(".time-block");
 
+  //Add eventlister for each timeblock 
   $(timeBlocks).each(function (){
+    //Detect click on a element with .savebtn  within timeblock
     $(this).on("click",".saveBtn", function(){
       console.log($(this).parent().attr("id"));
+      //Store in local storage the text with a key equal to the id of the textblock
       localStorage.setItem($(this).parent().attr("id"), $(this).parent().find(".description").val());
     })
   })
 
-  //Get the current hour
-  var currHour = dayjs().hour(); 
+  
   // for all time blocks add the appropriate class to said container
   
   // TODO: Add code to apply the past, present, or future class to each time
@@ -29,6 +31,14 @@ $(document).ready(function () {
   // past, present, and future classes? How can Day.js be used to get the
   // current hour in 24-hour time?
   //
+
+  //Get the current hour
+  var currHour = dayjs().hour(); 
+
+  /*
+  For each timeblock compare the current hour to the timeblock hour and add the appropriate class depending
+  on whether the timeblock has already past, we are currently in it, or if it's going to be in the future
+  */ 
   for(var i = 0; i < timeBlocks.length; i++){
     var hour = parseInt($(timeBlocks[i]).attr("hour"));
     if(hour < currHour){
@@ -46,6 +56,8 @@ $(document).ready(function () {
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
   //
+
+  //On launch load the events in localStorage that are saved in the browser in to the respective timeblock
   $(timeBlocks).each(function (){
       var innerText = localStorage.getItem($(this).attr("id"));
       if(innerText !==null){
@@ -57,6 +69,8 @@ $(document).ready(function () {
       }
   })
   // TODO: Add code to display the current date in the header of the page.
+
+  //Create the formatted date and insert it into the span with id of "currentDay".
   var formattedDate = dayjs().format("dddd, MMMM D");
   $("#currentDay").text(formattedDate)
 });
